@@ -10,10 +10,11 @@ namespace ADS1115.Devices.I2c.ADS1115
     //láthatóság amit itt public az mind publicnak kell lenni máshol :( paraméterben
 
 
-    public class ADS1115 : IDisposable, IAnalogDititalConverter
+    public class ADS1115 : IDisposable
     {
-        public AdcMode ConverterMode { get; set; }
+        public bool isContConvOn { get; private set; } = false;
         public bool IsInitialized { get; private set; }
+   
 
         private readonly byte ADC_I2C_ADDR;                     //address of the ads1115
         private const byte ADC_REG_POINTER_CONVERSION = 0x00;   //pointer register values
@@ -44,8 +45,11 @@ namespace ADS1115.Devices.I2c.ADS1115
 
             // gets the default controller for the system, can be the lightning or any provider
             I2cController controller = await I2cController.GetDefaultAsync();
+
+            var settings = new I2cConnectionSettings(ADC_I2C_ADDR);
+            settings.BusSpeed = I2cBusSpeed.FastMode;
             // gets the I2CDevice from the controller using the connection setting
-            adc = controller.GetDevice(new I2cConnectionSettings(ADC_I2C_ADDR));
+            adc = controller.GetDevice(settings);
 
             if (adc == null)
                 throw new Exception("I2C controller not available on the system");
@@ -53,26 +57,51 @@ namespace ADS1115.Devices.I2c.ADS1115
             IsInitialized = true;
         }
 
+        public void writeConfig(byte[] config)
+        {
+            adc.Write(new byte[] { ADC_REG_POINTER_CONFIG, config[0], config[1] });
+        }
+
+        public byte[] readConfig()
+        {
+            byte[] readRegister = new byte[2];
+            adc.WriteRead(new byte[] { ADC_REG_POINTER_CONFIG },readRegister);
+            return readRegister;
+        }
+
+        /*
         public void initializeContinuousConversionMode(ADS1115SensorSetting setting)
         {
             throw new NotImplementedException();
         }
 
-        public byte[] readConfig()
+        public int readContinuous()
         {
-            /*
-                beállít config reg és read 16 bit
-            */
-            throw new NotImplementedException();
-        }
+            if(isContConvOn)
+            {
+                var readBuffer = new byte[2];
+                adc.Read(readBuffer);
 
-        public Task<ADS1115SensorData> readContinuous()
-        {
-            /*
-                valahogy megoldani, hogy egyből tudjon olvasni ne kelljen mindig állítgatni
-             */
-            throw new NotImplementedException();
-        }
+                if ((byte)(readBuffer[0] & 0x80) != 0x00)
+                {
+                    // two's complement conversion (two's complement byte array to int16)
+                    readBuffer[0] = (byte)~readBuffer[0];
+                    readBuffer[0] &= 0xEF;
+                    readBuffer[1] = (byte)~readBuffer[1];
+                    Array.Reverse(readBuffer);
+                    return Convert.ToInt16(-1 * (BitConverter.ToInt16(readBuffer, 0) + 1));
+                }
+                else
+                {
+                    Array.Reverse(readBuffer);
+                    return BitConverter.ToInt16(readBuffer, 0);
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+        }*/
 
         public async Task<ADS1115SensorData> readSingleShot(ADS1115SensorSetting setting)
         {
@@ -89,28 +118,26 @@ namespace ADS1115.Devices.I2c.ADS1115
             return sensorData;
         }
 
-        public void writeConfig(byte[] config)
+        public void conversionReadyPinTurnOn()
         {
-            /*
-                beállít config reg és write 16 bit
-             */
-            throw new NotImplementedException();
+            throw new NotImplementedException();  //adc.Write(new byte[] { ADC_REG_POINTER_HITRESHOLD, 0x00, 0x00 });
         }
 
-        public void writeHighTreshold(byte[] treshold)
+        public void writeHighTreshold(Int16 treshold)
         {
-            /*
-                beállít pointer reg a tresholdra és write 16 bit mint a config írásánál
-            */
-            throw new NotImplementedException();
+                byte[] bytes = BitConverter.GetBytes(treshold);
+                Array.Reverse(bytes);
+                var writeBuffer = new byte[] { ADC_REG_POINTER_HITRESHOLD, bytes[0], bytes[1] };
+                adc.Write(writeBuffer);
+            
         }
 
-        public void writeLowTreshold(byte[] treshold)
+        public void writeLowTreshold(Int16 treshold)
         {
-            /*
-             beállít pointer reg a tresholdra és write 16 bit mint a config írásánál
-             */
-            throw new NotImplementedException();
+                byte[] bytes = BitConverter.GetBytes(treshold);
+                Array.Reverse(bytes);
+                var writeBuffer = new byte[] { ADC_REG_POINTER_LOTRESHOLD, bytes[0], bytes[1] };
+                adc.Write(writeBuffer);
         }
 
         public async Task<ADS1115SensorsData> readTwoDifferentialInSingleShot(ADS1115SensorSetting setting)
@@ -188,15 +215,17 @@ namespace ADS1115.Devices.I2c.ADS1115
 
             if ((byte)(readBuffer[0] & 0x80) != 0x00)
             {
-                // two's complement conversion
+                // two's complement conversion (two's complement byte array to int16)
+                readBuffer[0] = (byte)~readBuffer[0];
+                readBuffer[0] &= 0xEF;
+                readBuffer[1] = (byte)~readBuffer[1];
                 Array.Reverse(readBuffer);
-                var Result = 255 & ~(BitConverter.ToUInt16(readBuffer, 0) - 1);
-                return -1 * Result;
+                return Convert.ToInt16(-1 * (BitConverter.ToInt16(readBuffer, 0) + 1));
             }
             else
             {
                 Array.Reverse(readBuffer);
-                return BitConverter.ToUInt16(readBuffer, 0);
+                return BitConverter.ToInt16(readBuffer, 0);
             }
         }
 
