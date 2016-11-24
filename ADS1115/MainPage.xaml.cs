@@ -156,6 +156,11 @@ namespace ADS1115
                 throw new Exception("Initialization has failed: " + ex);
             }
         }
+
+        private void bt_convert_Click(object sender, RoutedEventArgs e)
+        {
+            // ha continous akkor mást olvas mint ss módban
+        }
     }
 }
 

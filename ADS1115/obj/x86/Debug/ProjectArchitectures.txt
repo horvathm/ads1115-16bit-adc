@@ -1,1 +1,0 @@
-C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\ADS1115.csproj;x86
