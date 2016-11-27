@@ -96,7 +96,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Devices\I2c\ADS1115\ADS1115.cs" />
-    <Compile Include="Devices\I2c\ADS1115\ADS1115SensorsData.cs" />
     <Compile Include="Devices\I2c\ADS1115\ADS1115SensorSetting.cs" />
     <Compile Include="Devices\I2c\ADS1115\ADS1115SensorData.cs" />
     <Compile Include="Devices\I2c\ADS1115\IAnalogDititalConverter.cs" />
