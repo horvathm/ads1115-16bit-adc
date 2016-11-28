@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ADS1115.Devices.I2c.ADS1115
+namespace ADC.Devices.I2c.ADS1115
 {
     #region Enumerations
     public enum AdcAddress : byte { GND = 0x48, VCC = 0x49, SDA = 0x4A, SCL = 0x4B }       // Possible ads1115 addresses:  0x48: ADR -> GND  0x49: ADR -> VCC  0x4A: ADR -> SDA  0x4B: ADR -> SCL

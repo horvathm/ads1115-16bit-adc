@@ -95,11 +95,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Devices\I2c\ADS1115\ADS1115.cs" />
+    <Compile Include="Devices\I2c\ADS1115\ADS1115Sensor.cs" />
     <Compile Include="Devices\I2c\ADS1115\ADS1115SensorSetting.cs" />
     <Compile Include="Devices\I2c\ADS1115\ADS1115SensorData.cs" />
     <Compile Include="Devices\I2c\ADS1115\IAnalogDititalConverter.cs" />
-    <Compile Include="Devices\I2c\SensorADS1115.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

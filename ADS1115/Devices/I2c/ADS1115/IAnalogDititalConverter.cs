@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ADS1115.Devices.I2c.ADS1115
+namespace ADC.Devices.I2c.ADS1115
 {
     interface IAnalogDititalConverter
     {

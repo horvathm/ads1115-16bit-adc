@@ -1,30 +1,21 @@
-﻿using Microsoft.IoT.Lightning.Providers;
-using ADS1115.Devices.I2c_devices;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Devices;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using ADC.Devices.I2c.ADS1115;
+using Microsoft.IoT.Lightning.Providers;
+using Windows.Devices;
 
-namespace ADS1115
+namespace ADC
 {
     public sealed partial class MainPage : Page
     {
         #region Fields
         private DispatcherTimer timer;
-        private SensorADS1115 adc;
+        private ADS1115Sensor adc;
         #endregion
 
         #region INotifyPropertyChanged implementation
@@ -57,23 +48,28 @@ namespace ADS1115
         public IEnumerable<AdcComparatorLatching> ComparatorLatchings => Enum.GetValues(typeof(AdcComparatorLatching)).Cast<AdcComparatorLatching>();
         public IEnumerable<AdcComparatorQueue> ComparatorQueue => Enum.GetValues(typeof(AdcComparatorQueue)).Cast<AdcComparatorQueue>();
         #endregion
-        
-        //xaml-be -> SelectedItem="{Binding Todo.Priority, Mode=TwoWay}"
 
         #region Properties
-        public bool Mode
-        {
-            get {return _mode; }
-            set {Set(ref _mode,value); }
-        }
-        private bool _mode = true;
-
         public double ConvertedValue
         {
             get { return _convertedValue; }
             set { Set(ref _convertedValue, value); }
         }
         private double _convertedValue = 0;
+
+        public double ConvertedVoltage
+        {
+            get { return _convertedVoltage; }
+            set { Set(ref _convertedVoltage, value); }
+        }
+        private double _convertedVoltage = 0;
+
+        public ADS1115SensorSetting Setting
+        {
+            get { return _setting; }
+            set { Set(ref _setting, value); }
+        }
+        private ADS1115SensorSetting _setting = new ADS1115SensorSetting();
         #endregion
 
         public MainPage()
@@ -85,20 +81,18 @@ namespace ADS1115
 
             // Register for the unloaded event so we can clean up upon exit
             Unloaded += MainPage_Unloaded;
-            /*
+            
             // Set Lightning as the default provider
             if (LightningProvider.IsLightningEnabled)
                 LowLevelDevicesController.DefaultProvider = LightningProvider.GetAggregateProvider();
 
             // Initialize the DispatcherTimer
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(1000);
+            timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += timer_tick;
-            timer.Start();
-            
+
             // Initialize the sensors
             InitializeSensors();
-            */
         }
 
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)
@@ -117,29 +111,15 @@ namespace ADS1115
         {
             if (adc != null && adc.IsInitialized)
             {
-                var settings = new ADS1115SensorSetting()
-                {
-                    Mode = AdcMode.SINGLESHOOT_CONVERSION,
-                    Pga = AdcPga.G1,
-                    DataRate = AdcDataRate.SPS860
-                };
-
                 try
                 {
-                    /*
-                    settings.Input = AdcInput.A1_SE;
-                    HumidityC = (await adc.GetSingleSensorData(settings)).DecimalValue;
-                    settings.Input = AdcInput.A2_SE;
-                    HumidityD = (await adc.GetSingleSensorData(settings)).DecimalValue;
-                    settings.Input = AdcInput.A0_SE;
-                    settings.Pga = AdcPga.G2;
-                    Luminance = (await adc.GetSingleSensorData(settings)).DecimalValue;
-                    */
-
+                    var temp = adc.readContinuous();
+                    ConvertedVoltage = 0;
+                    ConvertedValue = temp;
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Read from ADS1115 has failed: " + ex);
+                    throw new Exception("Continuous read has failed" + ex);
                 }
             }
         }
@@ -148,7 +128,7 @@ namespace ADS1115
         {
             try
             {
-                adc = new SensorADS1115(AdcAddress.GND);
+                adc = new ADS1115Sensor(AdcAddress.GND);
                 await adc.InitializeAsync();
             }
             catch (Exception ex)
@@ -157,22 +137,43 @@ namespace ADS1115
             }
         }
 
-        private void bt_convert_Click(object sender, RoutedEventArgs e)
+        private async void bt_convert_Click(object sender, RoutedEventArgs e)
         {
-            // ha continous akkor mást olvas mint ss módban
+            if (Setting.Mode == AdcMode.CONTINOUS_CONVERSION)
+            {
+                if (adc != null && adc.IsInitialized)
+                {
+                    try
+                    {
+                        await adc.readContinuousInit(Setting);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Initialization of continuous read has failed" + ex);
+                    }
+
+                    timer.Start();
+                }      
+            }
+            else
+            {
+                timer.Stop();
+
+                if (adc != null && adc.IsInitialized)
+                {
+                    try
+                    {
+                        var temp = await adc.readSingleShot(Setting);
+                        ConvertedValue = temp.DecimalValue;
+                        ConvertedVoltage = temp.VoltageValue;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Read from ADS1115 has failed: " + ex);
+                    }
+                }
+            }
         }
     }
 }
 
-    /*
-    ha singleshoot akkor a convert gombra mér egyet 
-    ha continous c akkor letilt gonb és folyton frissítget egy számlálóval a prperty
-
-     TODO: 
-        hiányzik még a treshold reg
-        doksi, méreget
-        property a comboval miért szar itt? 
-        lehetne mért értéket az adc-ben tárolni propertyben és ha cont mód akkor szálon adot időközönként frissítget => check más mo
-     
-     
-     */

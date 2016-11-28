@@ -193,7 +193,6 @@ C:\Users\hrvma\Desktop\ADS1115\ADS1115\obj\x86\Debug\qualifiers.txt
 C:\Users\hrvma\Desktop\ADS1115\ADS1115\obj\x86\Debug\qualifiers.txt.intermediate
 C:\Users\hrvma\Desktop\ADS1115\ADS1115\obj\x86\Debug\MultipleQualifiersPerDimensionFound.txt
 C:\Users\hrvma\Desktop\ADS1115\ADS1115\obj\x86\Debug\ProjectArchitectures.txt
-C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\obj\x86\Debug\ADS1115.csprojResolveAssemblyReference.cache
 C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\obj\x86\Debug\App.g.i.cs
 C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\obj\x86\Debug\App.g.cs
 C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\obj\x86\Debug\MainPage.g.i.cs
@@ -388,3 +387,4 @@ C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\obj\x86\Debug\qualifiers.
 C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\obj\x86\Debug\qualifiers.txt.intermediate
 C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\obj\x86\Debug\MultipleQualifiersPerDimensionFound.txt
 C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\obj\x86\Debug\ProjectArchitectures.txt
+C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\obj\x86\Debug\ADS1115.csprojResolveAssemblyReference.cache

@@ -1,15 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Roots >
   <Roots.PropertyPathNames>
+    <RootPropertyPathName Name="ConvertedVoltage" />
     <RootPropertyPathName Name="ConvertedValue" />
     <RootPropertyPathName Name="ComparatorQueue" />
+    <RootPropertyPathName Name="Setting" />
+    <RootPropertyPathName Name="ComQueue" />
     <RootPropertyPathName Name="ComparatorLatchings" />
+    <RootPropertyPathName Name="ComLatching" />
     <RootPropertyPathName Name="ComparatorPolarities" />
+    <RootPropertyPathName Name="ComPolarity" />
     <RootPropertyPathName Name="ComparatorModes" />
+    <RootPropertyPathName Name="ComMode" />
     <RootPropertyPathName Name="DataRates" />
+    <RootPropertyPathName Name="DataRate" />
     <RootPropertyPathName Name="Pgas" />
+    <RootPropertyPathName Name="Pga" />
     <RootPropertyPathName Name="Inputs" />
+    <RootPropertyPathName Name="Input" />
     <RootPropertyPathName Name="Modes" />
+    <RootPropertyPathName Name="Mode" />
   </Roots.PropertyPathNames>
   <Roots.RootTypes>
     <RootType FullName="Windows.UI.Xaml.Application">
@@ -47,6 +57,8 @@
       <RootProperty Name="Padding" />
       <RootProperty Name="Width" />
       <RootProperty Name="IsEnabled" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootEvent Name="Click" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.TextBox">
       <RootProperty Name="Text" />
@@ -54,17 +66,19 @@
       <RootProperty Name="Padding" />
       <RootProperty Name="Width" />
       <RootProperty Name="Height" />
+      <RootProperty Name="Margin" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Data.Binding">
-      <RootProperty Name="Mode" />
       <RootProperty Name="Path" />
+      <RootProperty Name="Mode" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ComboBox">
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="Width" />
       <RootProperty Name="ItemsSource" />
+      <RootProperty Name="SelectedItem" />
       <RootProperty Name="Margin" />
     </RootType>
-    <RootType FullName="ADS1115.MainPage" />
+    <RootType FullName="ADC.MainPage" />
   </Roots.RootTypes>
 </Roots>

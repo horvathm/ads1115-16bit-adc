@@ -222,7 +222,6 @@ namespace ADS1115.ADS1115_XamlTypeInfo
                 userType.AddMemberName("ComparatorLatchings");
                 userType.AddMemberName("ComparatorQueue");
                 userType.AddMemberName("ConvertedValue");
-                userType.AddMemberName("ConvertedVoltage");
                 userType.AddMemberName("Setting");
                 userType.SetIsLocalType();
                 xamlType = userType;
@@ -353,22 +352,12 @@ namespace ADS1115.ADS1115_XamlTypeInfo
             var that = (global::ADC.MainPage)instance;
             that.ConvertedValue = (global::System.Double)Value;
         }
-        private object get_9_MainPage_ConvertedVoltage(object instance)
-        {
-            var that = (global::ADC.MainPage)instance;
-            return that.ConvertedVoltage;
-        }
-        private void set_9_MainPage_ConvertedVoltage(object instance, object Value)
-        {
-            var that = (global::ADC.MainPage)instance;
-            that.ConvertedVoltage = (global::System.Double)Value;
-        }
-        private object get_10_MainPage_Setting(object instance)
+        private object get_9_MainPage_Setting(object instance)
         {
             var that = (global::ADC.MainPage)instance;
             return that.Setting;
         }
-        private void set_10_MainPage_Setting(object instance, object Value)
+        private void set_9_MainPage_Setting(object instance, object Value)
         {
             var that = (global::ADC.MainPage)instance;
             that.Setting = (global::ADC.Devices.I2c.ADS1115.ADS1115SensorSetting)Value;
@@ -435,17 +424,11 @@ namespace ADS1115.ADS1115_XamlTypeInfo
                 xamlMember.Getter = get_8_MainPage_ConvertedValue;
                 xamlMember.Setter = set_8_MainPage_ConvertedValue;
                 break;
-            case "ADC.MainPage.ConvertedVoltage":
-                userType = (global::ADS1115.ADS1115_XamlTypeInfo.XamlUserType)GetXamlTypeByName("ADC.MainPage");
-                xamlMember = new global::ADS1115.ADS1115_XamlTypeInfo.XamlMember(this, "ConvertedVoltage", "Double");
-                xamlMember.Getter = get_9_MainPage_ConvertedVoltage;
-                xamlMember.Setter = set_9_MainPage_ConvertedVoltage;
-                break;
             case "ADC.MainPage.Setting":
                 userType = (global::ADS1115.ADS1115_XamlTypeInfo.XamlUserType)GetXamlTypeByName("ADC.MainPage");
                 xamlMember = new global::ADS1115.ADS1115_XamlTypeInfo.XamlMember(this, "Setting", "ADC.Devices.I2c.ADS1115.ADS1115SensorSetting");
-                xamlMember.Getter = get_10_MainPage_Setting;
-                xamlMember.Setter = set_10_MainPage_Setting;
+                xamlMember.Getter = get_9_MainPage_Setting;
+                xamlMember.Setter = set_9_MainPage_Setting;
                 break;
             }
             return xamlMember;

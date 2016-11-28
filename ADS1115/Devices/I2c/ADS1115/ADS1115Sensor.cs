@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.I2c;
 
-namespace ADS1115.Devices.I2c.ADS1115
+namespace ADC.Devices.I2c.ADS1115
 {
     //láthatóság amit itt public az mind publicnak kell lenni máshol :( paraméterben
 
 
-    public sealed class ADS1115 : IDisposable, IAnalogDititalConverter
+    public sealed class ADS1115Sensor : IDisposable, IAnalogDititalConverter
     {
         public bool IsInitialized { get; private set; }
    
@@ -27,7 +27,7 @@ namespace ADS1115.Devices.I2c.ADS1115
         
         
         //
-        public ADS1115(AdcAddress ads1115Addresses)
+        public ADS1115Sensor(AdcAddress ads1115Addresses)
         {
             ADC_I2C_ADDR = (byte)ads1115Addresses;
         }
@@ -170,7 +170,7 @@ namespace ADS1115.Devices.I2c.ADS1115
 
             return sensorData;
         }
-   
+
         private async Task<int> ReadSensorAsync(byte configA, byte configB)
         {
             var command = new byte[] { ADC_REG_POINTER_CONFIG, configA, configB };
@@ -256,4 +256,7 @@ namespace ADS1115.Devices.I2c.ADS1115
         doksi elolvas megint
         feszultseg ertekek kimeregetese poti es multimeterrel
         conversionReadyPinTurnOn hiányzik
-     */
+        kipróbál eszközön 
+        try catch-et ki is lehetne szedni, vagy legalább cc modban
+        doksi, méreget
+*/
