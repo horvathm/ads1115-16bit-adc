@@ -18,6 +18,9 @@ namespace ADC.Devices.I2c.ADS1115
     public enum AdcComparatorQueue : byte { ASSERT_AFTER_ONE = 0x01, ASSERT_AFTER_TWO = 0x02, ASSERT_AFTER_FOUR = 0x04, DISABLE_COMPARATOR = 0x03 }
     #endregion
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class ADS1115SensorSetting
     {
         public AdcInput Input { get; set; } = AdcInput.A1_SE;

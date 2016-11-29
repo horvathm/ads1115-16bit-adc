@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace ADC.Devices.I2c.ADS1115
 {
+    /// <summary>
+    /// 
+    /// </summary>
     interface IAnalogDititalConverter
     {
         void writeConfig(byte[] config);
         Task<byte[]> readConfig();
 
-        Task writeTreshold(Int16 loTreshold, Int16 highTreshold);
+        void TurnAlertIntoConversionReady();
+        Task writeTreshold(UInt16 loTreshold, UInt16 highTreshold);
 
         Task readContinuousInit(ADS1115SensorSetting setting);
         int readContinuous();

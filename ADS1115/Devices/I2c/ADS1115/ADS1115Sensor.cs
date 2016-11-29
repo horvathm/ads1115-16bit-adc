@@ -9,7 +9,9 @@ namespace ADC.Devices.I2c.ADS1115
 {
     //láthatóság amit itt public az mind publicnak kell lenni máshol :( paraméterben
 
-
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class ADS1115Sensor : IDisposable, IAnalogDititalConverter
     {
         public bool IsInitialized { get; private set; }
@@ -26,20 +28,28 @@ namespace ADC.Devices.I2c.ADS1115
         private bool fastReadAvailable = false;                 //
         
         
-        //
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ads1115Addresses"></param>
         public ADS1115Sensor(AdcAddress ads1115Addresses)
         {
             ADC_I2C_ADDR = (byte)ads1115Addresses;
         }
 
-        //
+        /// <summary>
+        /// 
+        /// </summary>
         public void Dispose()
         {
             adc.Dispose();
             adc = null;
         }
 
-        //
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task InitializeAsync()
         {
             if (IsInitialized)
@@ -61,7 +71,10 @@ namespace ADC.Devices.I2c.ADS1115
             IsInitialized = true;
         }
 
-        //
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="config"></param>
         public void writeConfig(byte[] config)
         {
             adc.Write(new byte[] { ADC_REG_POINTER_CONFIG, config[0], config[1] });
@@ -69,7 +82,10 @@ namespace ADC.Devices.I2c.ADS1115
             fastReadAvailable = false;
         }
 
-        //
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<byte[]> readConfig()
         {
             byte[] readRegister = new byte[2];
@@ -83,28 +99,59 @@ namespace ADC.Devices.I2c.ADS1115
             return readRegister;
         }
 
-        //
-        public async Task writeTreshold(Int16 loTreshold, Int16 highTreshold)
+        /// <summary>
+        /// 
+        /// </summary>
+        public async void TurnAlertIntoConversionReady()
         {
-            byte[] bytesH = BitConverter.GetBytes(highTreshold);
+            byte[] bytesH = BitConverter.GetBytes(0xFFFF);
+            byte[] bytesL = BitConverter.GetBytes(0x0000);
+
             Array.Reverse(bytesH);
-            var writeBufferH = new byte[] { ADC_REG_POINTER_HITRESHOLD, bytesH[0], bytesH[1] };
-            adc.Write(writeBufferH);
-
-            await Task.Delay(10);
-
-            byte[] bytesL = BitConverter.GetBytes(loTreshold);
             Array.Reverse(bytesL);
-            var writeBufferL = new byte[] { ADC_REG_POINTER_LOTRESHOLD, bytesL[0], bytesL[1] };
-            adc.Write(writeBufferL);
 
-            await Task.Delay(10);
+            var writeBufferH = new byte[] { ADC_REG_POINTER_HITRESHOLD, bytesH[0], bytesH[1] };
+            var writeBufferL = new byte[] { ADC_REG_POINTER_LOTRESHOLD, bytesL[0], bytesL[1] };
+
+            adc.Write(writeBufferH); await Task.Delay(10);
+            adc.Write(writeBufferL); await Task.Delay(10);
 
             var writeBuffer = new byte[] { ADC_REG_POINTER_CONVERSION };
             adc.Write(writeBuffer);
         }
 
-        //
+        /// <summary>
+        /// Lo: 0x8000 Hi: 0x7FFF
+        /// </summary>
+        /// <param name="loTreshold"></param>
+        /// <param name="highTreshold"></param>
+        /// <returns></returns>
+        public async Task writeTreshold(UInt16 loTreshold = 32768, UInt16 highTreshold = 32767)
+        {
+            byte[] bytesH = BitConverter.GetBytes(highTreshold);
+            byte[] bytesL = BitConverter.GetBytes(loTreshold);
+
+            Array.Reverse(bytesH);
+            Array.Reverse(bytesL);
+
+            if (((bytesH[0] & 0x80) != 0) && ((bytesL[0] & 0x80) == 0))
+                throw new ArgumentException("High treshold highest bit is 1 and low treshold highest bit is 0 witch disables treshold register");
+
+            var writeBufferH = new byte[] { ADC_REG_POINTER_HITRESHOLD, bytesH[0], bytesH[1] };
+            var writeBufferL = new byte[] { ADC_REG_POINTER_LOTRESHOLD, bytesL[0], bytesL[1] };
+
+            adc.Write(writeBufferH);    await Task.Delay(10);
+            adc.Write(writeBufferL);    await Task.Delay(10);
+
+            var writeBuffer = new byte[] { ADC_REG_POINTER_CONVERSION };
+            adc.Write(writeBuffer);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="setting"></param>
+        /// <returns></returns>
         public async Task readContinuousInit(ADS1115SensorSetting setting)
         {
             if (setting.Mode != AdcMode.CONTINOUS_CONVERSION)
@@ -121,7 +168,10 @@ namespace ADC.Devices.I2c.ADS1115
             fastReadAvailable = true;
         }
 
-        // először egy read 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public int readContinuous()
         {
             if (fastReadAvailable)
@@ -150,7 +200,11 @@ namespace ADC.Devices.I2c.ADS1115
             }
         }
 
-        //
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="setting"></param>
+        /// <returns></returns>
         public async Task<ADS1115SensorData> readSingleShot(ADS1115SensorSetting setting)
         {
             if (setting.Mode != AdcMode.SINGLESHOOT_CONVERSION)
@@ -171,6 +225,7 @@ namespace ADC.Devices.I2c.ADS1115
             return sensorData;
         }
 
+        //
         private async Task<int> ReadSensorAsync(byte configA, byte configB)
         {
             var command = new byte[] { ADC_REG_POINTER_CONFIG, configA, configB };
