@@ -7,27 +7,25 @@ using Windows.Devices.I2c;
 
 namespace ADC.Devices.I2c.ADS1115
 {
-    //láthatóság amit itt public az mind publicnak kell lenni máshol :( paraméterben
-
     /// <summary>
     /// 
     /// </summary>
     public sealed class ADS1115Sensor : IDisposable, IAnalogDititalConverter
     {
-        public bool IsInitialized { get; private set; }
-   
-
-        private readonly byte ADC_I2C_ADDR;                     //address of the ads1115
-        private const byte ADC_REG_POINTER_CONVERSION = 0x00;   //pointer register values
+        #region Fields
+        private readonly byte ADC_I2C_ADDR;                     // address of the ads1115
+        private const byte ADC_REG_POINTER_CONVERSION = 0x00;   // pointer register values
         private const byte ADC_REG_POINTER_CONFIG = 0x01;
         private const byte ADC_REG_POINTER_LOTRESHOLD = 0x02;
         private const byte ADC_REG_POINTER_HITRESHOLD = 0x03;
-        public const int ADC_RES = 65536;                       //resolutions in different conversion modes
+        public const int ADC_RES = 65536;                       // resolutions in different conversion modes
         public const int ADC_HALF_RES = 32768;
-        private I2cDevice adc;                                  //the device
-        private bool fastReadAvailable = false;                 //
-        
-        
+        private I2cDevice adc;                                  // the device
+        private bool fastReadAvailable = false;                 // if false you have to initialize before use read continuous
+        #endregion
+
+        public bool IsInitialized { get; private set; }
+
         /// <summary>
         /// 
         /// </summary>
@@ -259,7 +257,7 @@ namespace ADC.Devices.I2c.ADS1115
             byte configA = 0;
             return configA = (byte)((byte)setting.Mode << 7 | (byte)setting.Input << 4 | (byte)setting.Pga << 1 | (byte)setting.Mode);
         }
-        
+
         //
         private byte configB(ADS1115SensorSetting setting)
         {
@@ -267,6 +265,7 @@ namespace ADC.Devices.I2c.ADS1115
             return configB = (byte)((byte)setting.DataRate << 5 | (byte)setting.ComMode << 4 | (byte)setting.ComPolarity << 3 | (byte)setting.ComLatching << 2 | (byte)setting.ComQueue);
         }
         
+
         //
         private double DecimalToVoltage(AdcPga pga, int temp, int resolution)
         {
@@ -294,7 +293,8 @@ namespace ADC.Devices.I2c.ADS1115
                     voltage = 0.256;
                     break;
             }
-            return voltage / (resolution / temp);
+
+            return (double)temp*(voltage/(double)resolution);
         }
     }
 

@@ -11,7 +11,7 @@ using Windows.Devices;
 
 namespace ADC
 {
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
         #region Fields
         private DispatcherTimer timer;
@@ -173,6 +173,16 @@ namespace ADC
                     }
                 }
             }
+        }
+
+        private async void button_Click(object sender, RoutedEventArgs e)
+        {
+            await adc.writeTreshold(ushort.Parse(tb_tresh_a.Text), ushort.Parse(tb_tresh_b.Text));
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            adc.TurnAlertIntoConversionReady();
         }
     }
 }

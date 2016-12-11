@@ -11,7 +11,6 @@ namespace ADC.Devices.I2c.ADS1115
     /// </summary>
     public struct ADS1115SensorData
     {
-        //field és láthatóság osztálybeli?
         public int DecimalValue { get; set; }
         public double VoltageValue { get; set; }
     }

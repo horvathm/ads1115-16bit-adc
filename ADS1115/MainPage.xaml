@@ -61,11 +61,21 @@
         <TextBlock Grid.Row="0" Text="ADS 1115 Tester App" 
                    TextAlignment="Center" FontSize="30"/>
         <Button x:Name="bt_convert" Content="Convert!" Grid.Row="2"
-                HorizontalAlignment="Center" Margin="540,0,540,8" Padding="5" Width="200"
-                IsEnabled="True" VerticalAlignment="Bottom" Click="bt_convert_Click"/>
+                HorizontalAlignment="Center" Margin="540,0,540,10" Padding="5" Width="200"
+                IsEnabled="True" VerticalAlignment="Bottom" Click="bt_convert_Click" Height="32"/>
+        <TextBlock Grid.Row="3" Text="Decimal value"
+                 HorizontalAlignment="Center" Padding="5" Width="150" Height="23" Margin="-410,-7,0,0"/>
         <TextBox Grid.Row="3" Text="{Binding ConvertedValue}"
                  HorizontalAlignment="Center" Padding="5" Width="150" Height="23" Margin="-200,0,0,0"/>
+        <TextBlock Grid.Row="3" Text="Voltage value"
+                 HorizontalAlignment="Center" Padding="5" Width="150" Height="23" Margin="510,-7,0,0"/>
         <TextBox Grid.Row="3" Text="{Binding ConvertedVoltage}"
                  HorizontalAlignment="Center" Padding="5" Width="150" Height="23" Margin="200,0,0,0"/>
+        <TextBox x:Name="tb_tresh_a" HorizontalAlignment="Left" Margin="235,7,0,0" Grid.Row="2" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="33"/>
+        <TextBox x:Name="tb_tresh_b" HorizontalAlignment="Left" Margin="358,7,0,0" Grid.Row="2" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="33"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="181,13,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Tresh A" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="304,13,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Tresh B" VerticalAlignment="Top"/>
+        <Button x:Name="button" Content="Write Tresh" HorizontalAlignment="Left" Margin="430,8,0,0" Grid.Row="2" VerticalAlignment="Top" Height="32" Click="button_Click"/>
+        <Button x:Name="button1" Content="Turn on conversion ready pin" HorizontalAlignment="Left" Margin="872,8,0,0" Grid.Row="2" VerticalAlignment="Top" Height="31" Click="button1_Click"/>
     </Grid>
 </Page>
