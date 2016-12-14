@@ -1,3 +1,5 @@
 # ads1115-16bit-adc
 
-- github how to deploy readme.md és mi hol található
+Check out the wiki and the hackster project page for more information. 
+
+
