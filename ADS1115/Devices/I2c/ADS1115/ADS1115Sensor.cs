@@ -8,7 +8,7 @@ using Windows.Devices.I2c;
 namespace ADC.Devices.I2c.ADS1115
 {
     /// <summary>
-    /// 
+    /// Class that represents the ADS1115
     /// </summary>
     public sealed class ADS1115Sensor : IDisposable, IAnalogDititalConverter
     {
@@ -27,16 +27,16 @@ namespace ADC.Devices.I2c.ADS1115
         public bool IsInitialized { get; private set; }
 
         /// <summary>
-        /// 
+        /// Ctor. Sets the device address given in the parameter. 
         /// </summary>
         /// <param name="ads1115Addresses"></param>
-        public ADS1115Sensor(AdcAddress ads1115Addresses)
+        public ADS1115Sensor(AdcAddress ads1115Addresses = AdcAddress.GND)
         {
             ADC_I2C_ADDR = (byte)ads1115Addresses;
         }
 
         /// <summary>
-        /// 
+        /// Free up the resources.
         /// </summary>
         public void Dispose()
         {
@@ -45,7 +45,7 @@ namespace ADC.Devices.I2c.ADS1115
         }
 
         /// <summary>
-        /// 
+        /// Initialize sensor. You must initialize before use the ADS1115.
         /// </summary>
         /// <returns></returns>
         public async Task InitializeAsync()
@@ -70,7 +70,7 @@ namespace ADC.Devices.I2c.ADS1115
         }
 
         /// <summary>
-        /// 
+        /// Writes the configuration register.
         /// </summary>
         /// <param name="config"></param>
         public void writeConfig(byte[] config)
@@ -81,7 +81,7 @@ namespace ADC.Devices.I2c.ADS1115
         }
 
         /// <summary>
-        /// 
+        /// Reads the configuration register. 
         /// </summary>
         /// <returns></returns>
         public async Task<byte[]> readConfig()
@@ -98,7 +98,7 @@ namespace ADC.Devices.I2c.ADS1115
         }
 
         /// <summary>
-        /// 
+        /// Turns ALERT pin into conversion ready pin.
         /// </summary>
         public async void TurnAlertIntoConversionReady()
         {
@@ -119,7 +119,8 @@ namespace ADC.Devices.I2c.ADS1115
         }
 
         /// <summary>
-        /// Lo: 0x8000 Hi: 0x7FFF
+        /// Writes the treshold registers. If the given value turns alert pin into conversion ready it throws ArgumentException.
+        /// Default values are the default parameters. Lo: 0x8000 Hi: 0x7FFF
         /// </summary>
         /// <param name="loTreshold"></param>
         /// <param name="highTreshold"></param>
@@ -146,7 +147,7 @@ namespace ADC.Devices.I2c.ADS1115
         }
 
         /// <summary>
-        /// 
+        /// You have to initialize before use readContinuous and you have to do it every time when you write into the configuration register.
         /// </summary>
         /// <param name="setting"></param>
         /// <returns></returns>
@@ -167,7 +168,7 @@ namespace ADC.Devices.I2c.ADS1115
         }
 
         /// <summary>
-        /// 
+        /// Read sensor in continuous mode.
         /// </summary>
         /// <returns></returns>
         public int readContinuous()
@@ -199,7 +200,7 @@ namespace ADC.Devices.I2c.ADS1115
         }
 
         /// <summary>
-        /// 
+        /// Read sensor in single-shot mode.
         /// </summary>
         /// <param name="setting"></param>
         /// <returns></returns>
@@ -223,7 +224,6 @@ namespace ADC.Devices.I2c.ADS1115
             return sensorData;
         }
 
-        //
         private async Task<int> ReadSensorAsync(byte configA, byte configB)
         {
             var command = new byte[] { ADC_REG_POINTER_CONFIG, configA, configB };
@@ -251,14 +251,14 @@ namespace ADC.Devices.I2c.ADS1115
             }
         }
 
-        //
+        // creates the byte byte of the configuration register from the ADS1115SensorSetting object
         private byte configA(ADS1115SensorSetting setting)
         {
             byte configA = 0;
             return configA = (byte)((byte)setting.Mode << 7 | (byte)setting.Input << 4 | (byte)setting.Pga << 1 | (byte)setting.Mode);
         }
 
-        //
+        // creates the second byte of the configuration register from the ADS1115SensorSetting object
         private byte configB(ADS1115SensorSetting setting)
         {
             byte configB;
@@ -266,7 +266,7 @@ namespace ADC.Devices.I2c.ADS1115
         }
         
 
-        //
+        // creates the voltage value from the decimal value
         private double DecimalToVoltage(AdcPga pga, int temp, int resolution)
         {
             double voltage;
@@ -299,19 +299,3 @@ namespace ADC.Devices.I2c.ADS1115
     }
 
 }
-
-/*
-    Todo:
-        treshold extra func megvalosit
-        funkciok megletenek ellenorzese
-        gui megir conti nem kell bele rendesen
-        doksi megir hozza hckstr
-        kommentez
-        lemer sigl.s. vs conti mod
-        doksi elolvas megint
-        feszultseg ertekek kimeregetese poti es multimeterrel
-        conversionReadyPinTurnOn hiányzik
-        kipróbál eszközön 
-        try catch-et ki is lehetne szedni, vagy legalább cc modban
-        doksi, méreget
-*/

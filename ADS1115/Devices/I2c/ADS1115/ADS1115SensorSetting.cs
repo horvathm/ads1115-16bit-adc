@@ -21,23 +21,17 @@ namespace ADC.Devices.I2c.ADS1115
     #endregion
 
     /// <summary>
-    /// 
+    /// Class that contains the settings of the ADC. The default values are from the documentation.
     /// </summary>
     public class ADS1115SensorSetting : INotifyPropertyChanged
     {
         #region Properties
-        /// <summary>
-        /// 
-        /// </summary>
         public AdcInput Input
         { get { return _input; }
           set { Set(ref _input, value); }
         }
         private AdcInput _input = AdcInput.A1_SE;
 
-        /// <summary>
-        /// 
-        /// </summary>
         public AdcPga Pga
         {
             get { return _pga; }
@@ -52,9 +46,6 @@ namespace ADC.Devices.I2c.ADS1115
         }
         private AdcMode _mode = AdcMode.SINGLESHOOT_CONVERSION;
 
-        /// <summary>
-        /// 
-        /// </summary>
         public AdcDataRate DataRate
         {
             get { return _dataRate; }
@@ -62,9 +53,6 @@ namespace ADC.Devices.I2c.ADS1115
         }
         private AdcDataRate _dataRate = AdcDataRate.SPS128;
 
-        /// <summary>
-        /// 
-        /// </summary>
         public AdcComparatorMode ComMode
         {
             get { return _comMode; }
@@ -72,9 +60,6 @@ namespace ADC.Devices.I2c.ADS1115
         }
         private AdcComparatorMode _comMode = AdcComparatorMode.TRADITIONAL;
 
-        /// <summary>
-        /// 
-        /// </summary>
         public AdcComparatorPolarity ComPolarity
         {
             get { return _comPolarity; }
@@ -82,9 +67,6 @@ namespace ADC.Devices.I2c.ADS1115
         }
         private AdcComparatorPolarity _comPolarity = AdcComparatorPolarity.ACTIVE_LOW;
 
-        /// <summary>
-        /// 
-        /// </summary>
         public AdcComparatorLatching ComLatching
         {
             get { return _comLatching; }
@@ -92,9 +74,6 @@ namespace ADC.Devices.I2c.ADS1115
         }
         private AdcComparatorLatching _comLatching = AdcComparatorLatching.LATCHING;
 
-        /// <summary>
-        /// 
-        /// </summary>
         public AdcComparatorQueue ComQueue
         {
             get { return _comQueue; }
@@ -104,19 +83,8 @@ namespace ADC.Devices.I2c.ADS1115
         #endregion
 
         #region INotifyPropertyChanged implementation
-        /// <summary>
-        /// 
-        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="storage"></param>
-        /// <param name="value"></param>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
         public bool Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
         {
             // if unchanged return false
@@ -127,10 +95,6 @@ namespace ADC.Devices.I2c.ADS1115
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="propertyName"></param>
         private void RaisePropertyChanged(string propertyName)
         {
             // if PropertyChanged not null call the Invoke method

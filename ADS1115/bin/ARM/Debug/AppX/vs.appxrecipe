@@ -28,13 +28,13 @@
     <AppXManifest Include="C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\bin\ARM\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2016-12-09T16:20:18.790</Modified>
+      <Modified>2016-12-14T10:35:41.004</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\bin\ARM\Debug\ADS1115.exe">
       <PackagePath>entrypoint\ADS1115.exe</PackagePath>
-      <Modified>2016-12-09T16:20:17.496</Modified>
+      <Modified>2016-12-14T10:35:39.502</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\hrvma\.nuget\packages\Microsoft.CSharp\4.0.0\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -509,11 +509,11 @@
     <AppxPackagedFile Include="C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\bin\ARM\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2016-12-09T16:20:18.322</Modified>
+      <Modified>2016-12-14T10:35:40.597</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\hrvma\Documents\Git\ads1115-16bit-adc\ADS1115\bin\ARM\Debug\Core\ADS1115.exe">
       <PackagePath>ADS1115.exe</PackagePath>
-      <Modified>2016-12-09T16:20:18.782</Modified>
+      <Modified>2016-12-14T10:35:40.992</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
